@@ -1,0 +1,1 @@
+<?php $languageStrings=['LBL_MODULE_NAME'=>'SQL Report'];

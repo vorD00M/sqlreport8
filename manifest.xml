@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<module>
+  <name>SQLReport</name>
+  <label>SQL Report</label>
+  <version>0.2.1</version>
+    <parent>Tools</parent>
+  <author>Mudrov - VorDOOM</author>
+  <description>SQL Report - создание отчетов прямыми запросами</description>
+    <dependencies>
+        <vtiger_version>7.0.0</vtiger_version>
+        <vtiger_max_version>8.4.*</vtiger_max_version>
+    </dependencies>
+    <tables>
+        <table>
+            <name>vtiger_sqlreport</name>
+            <sql><![CDATA[
+CREATE TABLE vtiger_sqlreport (
+sqlreportid INT(11) NOT NULL,
+name VARCHAR(255) NOT NULL,
+sql_query LONGTEXT NOT NULL,
+description TEXT,
+PRIMARY KEY (sqlreportid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ]]></sql>
+        </table>
+        <table>
+            <name>vtiger_sqlreport_log</name>
+            <sql><![CDATA[
+CREATE TABLE IF NOT EXISTS `vtiger_sqlreport_log` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `query_id` INT NULL,
+  `user` VARCHAR(100),
+  `ip` VARCHAR(45),
+  `sql_hash` CHAR(64),
+  `status` VARCHAR(50),
+  `rows` INT NULL,
+  `error` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            ]]></sql>
+        </table>
+    </tables>
+
+</module>
