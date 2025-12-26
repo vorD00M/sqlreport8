@@ -2,7 +2,7 @@
 <module>
   <name>SQLReport</name>
   <label>SQL Report</label>
-  <version>0.2.1</version>
+  <version>0.3.1</version>
     <parent>Tools</parent>
   <author>Mudrov - VorDOOM</author>
   <description>SQL Report - создание отчетов прямыми запросами</description>
