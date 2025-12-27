@@ -3,9 +3,14 @@
 <script src="modules/SQLReport/resources/js/codemirror/mode/sql/sql.js"></script>
 
 <form onsubmit="return false;" class="sqlreport-editor-form">
+  <div class="form-group">
+    <label for="reportName">Название отчёта</label>
+    <input type="text" id="reportName" class="form-control" placeholder="Введите название">
+  </div>
   <textarea id="queryTextarea"></textarea>
   <div class="btn-group" style="margin-top:10px;">
     <button type="button" class="btn btn-success" onclick="run()">Выполнить</button>
+    <button type="button" class="btn btn-primary" onclick="saveQuery()">Сохранить</button>
     <button type="button" class="btn btn-default" onclick="exportCsv()">Экспорт CSV</button>
     <button type="button" class="btn btn-default" onclick="exportXls()">Экспорт XLS</button>
     <button type="button" class="btn btn-default" onclick="exportXlsx()">Экспорт XLSX</button>

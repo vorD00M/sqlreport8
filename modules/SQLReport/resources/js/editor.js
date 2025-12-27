@@ -8,7 +8,9 @@ var ed = CodeMirror.fromTextArea(ta, {
   lineWrapping: true,
 });
 
-var FORBIDDEN_RE = /(INSERT|UPDATE|DELETE|TRUNCATE|CREATE|DROP|ALTER)/gi;
+// Reuse existing global if present to avoid ReferenceError in multi-load scenarios.
+var FORBIDDEN_RE = window.FORBIDDEN_RE || /(INSERT|UPDATE|DELETE|TRUNCATE|CREATE|DROP|ALTER)/gi;
+window.FORBIDDEN_RE = FORBIDDEN_RE;
 
 function highlightError(sql) {
   var forbidden = new RegExp(FORBIDDEN_RE.source, 'gi');
@@ -70,6 +72,34 @@ function renderTable(rows, truncated) {
     html += '<div class="alert alert-warning">Показаны первые 1000 строк. Для полного экспорта используйте CSV/XLS(X).</div>';
   }
   out.innerHTML = html;
+}
+
+function saveQuery() {
+  var sql = ed.getValue();
+  var nameInput = document.getElementById('reportName');
+  var name = nameInput ? nameInput.value.trim() : '';
+
+  if (!name) {
+    document.getElementById('out').innerHTML = '<div class="alert alert-danger">Введите название отчёта</div>';
+    return;
+  }
+
+  if (!canProceed(sql)) {
+    return;
+  }
+
+  fetch('index.php?module=SQLReport&action=SaveQuery', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'name=' + encodeURIComponent(name) + '&sql=' + encodeURIComponent(sql)
+  }).then(function (r) { return r.json(); }).then(function (d) {
+    if (!d.success && d.error) {
+      document.getElementById('out').innerHTML = '<div class="alert alert-danger">' + d.error + '</div>';
+      return;
+    }
+
+    document.getElementById('out').innerHTML = '<div class="alert alert-success">Сохранено (ID: ' + d.id + ')</div>';
+  });
 }
 
 function exportCsv() {
